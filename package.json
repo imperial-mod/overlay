@@ -17,6 +17,7 @@
     "electron-builder": "^22.10.5"
   },
   "dependencies": {
+    "minecraft-folder-path": "^1.2.0",
     "node-fetch": "^2.6.1",
     "sha1": "^1.1.1"
   }

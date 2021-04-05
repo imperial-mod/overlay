@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
     let config = {
         user: "",
         apiKey: "",
-        minecraftPath: ""
+        minecraftPath: require("minecraft-folder-path")
     }
 
     let hypixelApi
