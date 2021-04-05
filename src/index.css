@@ -1,0 +1,52 @@
+@font-face {
+    font-family: minecraft;
+    src: url("../assets/fonts/Minecraft.otf");
+}
+
+:root, html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#status-bar {
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-app-region: drag;
+}
+
+#controls {
+    float: right;
+}
+
+#close {
+    background-color: red;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 7.5px;
+}
+
+#users {
+    width: 100%;
+}
+
+#users-header {
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgba(200, 200, 200, 0.7);
+}
+
+#user {
+    height: 30px;
+    font-family: minecraft;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+}
+
+#user:nth-of-type(2n) {
+    background-color: rgba(0, 0, 0, 0.1);
+}
