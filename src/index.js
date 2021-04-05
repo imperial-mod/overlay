@@ -19,6 +19,7 @@ const fs = require("fs")
 const os = require("os")
 const path = require("path")
 const api = require("./api")
+const { shell } = require("electron")
 
 const colors = {
     "DARK_RED": "#AA0000",
@@ -167,5 +168,6 @@ window.addEventListener("load", () => {
     } else {
         fs.mkdirSync(folderPath, {recursive: true})
         fs.writeFileSync(configPath, JSON.stringify(config, true, 4))
+        shell.openExternal(`file://${configPath}`)
     }
 })
