@@ -1,6 +1,6 @@
 {
   "name": "duels-overlay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An overlay to show stats in pregame for duels.",
   "main": "app.js",
   "build": {
@@ -8,7 +8,7 @@
     "productName": "Duels Overlay"
   },
   "scripts": {
-    "test": "npx electron ./app.js"
+    "test": "npx electron ./app.js --test-mode"
   },
   "author": "zani",
   "license": "GPL-3.0-or-later",
@@ -17,6 +17,8 @@
     "electron-builder": "^22.10.5"
   },
   "dependencies": {
+    "bl": "^0.7.0",
+    "memoryjs": "^3.4.0",
     "minecraft-folder-path": "^1.2.0",
     "node-fetch": "^2.6.1",
     "sha1": "^1.1.1"

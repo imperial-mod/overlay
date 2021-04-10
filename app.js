@@ -17,6 +17,7 @@
 
 const { app, BrowserWindow } = require("electron")
 const path = require("path")
+const { argv } = require("process")
 
 app.on("ready", () => {
     const win = new BrowserWindow({
@@ -33,11 +34,15 @@ app.on("ready", () => {
         alwaysOnTop: true
     })
 
-    win.on("blur", () => {
-        win.setIgnoreMouseEvents(true)
-    })
-    win.on("focus", () => {
-        win.setIgnoreMouseEvents(false)
-    })
+    if (argv[2] != "--test-mode") {
+        win.on("blur", () => {
+            win.setIgnoreMouseEvents(true)
+        })
+        
+        win.on("focus", () => {
+            win.setIgnoreMouseEvents(false)
+        })
+    }
+
     win.loadFile("./src/index.htm")
 })

@@ -1,0 +1,307 @@
+/* Copyright (C) 2021  zani
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>. */
+
+
+@font-face {
+    font-family: minecraft;
+    src: url("../../assets/fonts/Minecraft.otf");
+}
+
+/* Global styling */
+
+:root, html, body {
+    width: 100%;
+    margin: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#status-bar {
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-app-region: drag;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#status-bar-offset {
+    width: 100%;
+    height: 30px;
+}
+
+#menu-bar {
+    width: 100%;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 30px;
+    left: 0;
+}
+
+.menu-bar-option {
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 20px;
+    text-decoration: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+    padding: 0 5px;
+    font-size: 14px;
+}
+
+.menu-bar-option:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#menu-bar-offset {
+    width: 100%;
+    height: 20px;
+}
+
+#title {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    user-select: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    margin: 0 5px;
+    float: left;
+    height: 30px;
+    line-height: 30px;
+}
+
+#icon {
+    display: inline;
+    user-select: none;
+    height: 25px;
+    margin: 2.5px;
+    float: left;
+}
+
+#controls {
+    float: right;
+}
+
+#close {
+    background-color: red;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 7.5px;
+}
+
+/* Stats styling */
+
+#users {
+    width: 100%;
+    visibility: hidden;
+}
+
+#users-header {
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgba(200, 200, 200, 0.7);
+}
+
+.user {
+    height: 30px;
+    font-family: minecraft;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+}
+
+.user:nth-of-type(2n) {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Options styling */
+
+#body-options {
+    background-color: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+#body-options::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#options-area {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+    max-height: calc(100%-30px);
+}
+
+#options-save {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border: none;
+    height: 50px;
+    padding: 5px;
+    margin: 5px 0;
+    outline: none;
+    cursor: pointer;
+}
+
+#options-save:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.options-category {
+    width: 100%;
+    padding: 0 5px;
+    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+}
+
+.options-category:last-of-type {
+    border-bottom: none;
+}
+
+.options-header {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+}
+
+.options-label {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    margin: 0;
+    font-style: italic;
+}
+
+.options-label::after {
+    content: " -"
+}
+
+.options-text-input {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 5px;
+    outline: none;
+    border-radius: 3px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.options-input-censored {
+    filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 5px;
+    outline: none;
+    border-radius: 3px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.options-input-censored:focus {
+    filter: blur(0px);
+}
+
+.options-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 18px;
+    font-style: italic;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    user-select: none;
+}
+
+.options-checkbox::before {
+    content: "- ";
+}
+
+.options-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.options-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.options-checkbox:hover input ~ .options-checkmark {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.options-checkbox input:checked ~ .options-checkmark {
+    background-color: #2196F3;
+}
+
+.options-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.options-checkbox input:checked ~ .options-checkmark:after {
+    display: block;
+}
+ 
+.options-checkbox .options-checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.options-info {
+    width: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}

@@ -1,0 +1,74 @@
+<!-- Copyright (C) 2021  zani
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="js/options.js"></script>
+    <title>Duels Overlay</title>
+</head>
+
+<body id="body-options">
+    <div id="status-bar">
+        <img id="icon" src="../assets/icons/128x.png">
+        <span id="title">
+            Duels Overlay
+        </span>
+        <div id="controls">
+            
+        </div>
+    </div>
+    <div id="status-bar-offset"></div>
+    <div id="options-area">
+        <div class="options-category">
+            <h3 class="options-header">General</h3>
+            <p class="options-label">Username</p>
+            <input type="text" class="options-text-input" id="mc-user">
+
+            <p class="options-label">Minecraft Directory</p>
+            <input type="text" class="options-text-input" id="mc-dir">
+
+            <p class="options-label" >API Key</p>
+            <input type="text" class="options-input-censored" id="api-key">
+
+            <label class="options-checkbox">Enable You Tag
+                <input type="checkbox" id="you-tag">
+                <span class="options-checkmark"></span>
+            </label>
+        </div>
+
+        <div class="options-category">
+            <h3 class="options-header">Experimental</h3>
+            <label class="options-checkbox">Enable Direct Injection (coming soon)
+                <input type="checkbox" disabled>
+                <span class="options-checkmark"></span>
+            </label>
+        </div>
+
+        <div class="options-category">
+            <h3 class="options-header">About</h3>
+
+            <p class="options-info" id="app-ver"></p>
+            <p class="options-info" id="electron-ver"></p>
+            <p class="options-info" id="nodejs-ver"></p>
+
+            <button id="options-save">Save</button>
+        </div>
+    </div>
+</body>
+
+</html>
