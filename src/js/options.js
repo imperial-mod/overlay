@@ -32,7 +32,11 @@ window.addEventListener("load", () => {
     const appVer = document.querySelector("#app-ver")
     const electronVer = document.querySelector("#electron-ver")
     const youTag = document.querySelector("#you-tag")
+    const lunarRadio = document.querySelector("#lunar")
+    const vanillaRadio = document.querySelector("#vanilla-forge")
     const nodejsVer = document.querySelector("#nodejs-ver")
+
+    let client = "vanilla"
 
     const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json"), {encoding: "utf8"}))
 
@@ -47,9 +51,26 @@ window.addEventListener("load", () => {
         apiKey.value = config.apiKey || ""
         mcDir.value = config.minecraftPath || mcPath.replaceAll("\\", "/")
         youTag.checked = config.youTag || false
+
+        vanillaRadio.checked = (config.client || "vanilla") == "vanilla"
+        lunarRadio.checked = (config.client || "vanilla") == "lunar"
     } else {
         mcDir.value = mcPath.replaceAll("\\", "/")
     }
+
+    lunarRadio.addEventListener("change", () => {
+        if (lunarRadio.checked) {
+            mcDir.value = path.join(os.homedir(), "/.lunarclient/offline/1.8").replaceAll("\\", "/")
+            client = "lunar"
+        }
+    })
+
+    vanillaRadio.addEventListener("change", () => {
+        if (vanillaRadio.checked) {
+            mcDir.value = mcPath.replaceAll("\\", "/")
+            client = "vanilla"
+        }
+    })
 
     saveButton.addEventListener("click", () => {
         fs.mkdirSync(folderPath, {recursive: true})
@@ -57,7 +78,8 @@ window.addEventListener("load", () => {
             user: mcUser.value,
             apiKey: apiKey.value,
             minecraftPath: mcDir.value,
-            youTag: youTag.checked
+            youTag: youTag.checked,
+            client
         }, true, 4))
         window.location.href = "./index.htm"
     })
