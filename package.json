@@ -1,6 +1,6 @@
 {
   "name": "duels-overlay",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An overlay to show stats in pregame for duels.",
   "main": "app.js",
   "build": {
@@ -17,6 +17,7 @@
     "electron-builder": "^22.10.5"
   },
   "dependencies": {
+    "electron-updater": "^4.3.8",
     "minecraft-folder-path": "^1.2.0",
     "node-fetch": "^2.6.1",
     "sha1": "^1.1.1"
