@@ -93,7 +93,7 @@ window.addEventListener("load", () => {
         console.log(config)
 
         hypixelApi = new api.HypixelAPI(config.apiKey)
-        logPath = path.join(config.minecraftPath, "/logs/latest.log")
+        logPath = path.join(config.minecraftPath, "latest.log")
 
         const logReader = new LogReader(logPath)
 
@@ -169,10 +169,10 @@ window.addEventListener("load", () => {
                             wsThreat = 1
                         }
 
-                        if (bws >= 500) {
+                        if (bws >= 150) {
                             threatLevel += 3
                             bwsThreat = 3
-                        } else if (bws >= 100) {
+                        } else if (bws >= 50) {
                             threatLevel += 2
                             bwsThreat = 2
                         } else if (bws >= 20) {

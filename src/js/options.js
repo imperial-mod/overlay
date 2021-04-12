@@ -19,7 +19,7 @@ const path = require("path")
 const os = require("os")
 const fs = require("fs")
 const process = require("process")
-const mcPath = require("minecraft-folder-path")
+const mcPath = path.join(require("minecraft-folder-path"), "logs")
 
 window.addEventListener("load", () => {
     const folderPath = path.join(os.homedir(), "/duels_overlay")
@@ -34,6 +34,7 @@ window.addEventListener("load", () => {
     const youTag = document.querySelector("#you-tag")
     const lunarRadio = document.querySelector("#lunar")
     const vanillaRadio = document.querySelector("#vanilla-forge")
+    const blcRadio = document.querySelector("#blc")
     const nodejsVer = document.querySelector("#nodejs-ver")
 
     let client = "vanilla"
@@ -54,13 +55,15 @@ window.addEventListener("load", () => {
 
         vanillaRadio.checked = (config.client || "vanilla") == "vanilla"
         lunarRadio.checked = (config.client || "vanilla") == "lunar"
+        blcRadio.checked = (config.client || "vanilla") == "blc"
     } else {
         mcDir.value = mcPath.replaceAll("\\", "/")
+        vanillaRadio.checked = true
     }
 
     lunarRadio.addEventListener("change", () => {
         if (lunarRadio.checked) {
-            mcDir.value = path.join(os.homedir(), "/.lunarclient/offline/1.8").replaceAll("\\", "/")
+            mcDir.value = path.join(os.homedir(), "/.lunarclient/offline/1.8/logs").replaceAll("\\", "/")
             client = "lunar"
         }
     })
@@ -69,6 +72,13 @@ window.addEventListener("load", () => {
         if (vanillaRadio.checked) {
             mcDir.value = mcPath.replaceAll("\\", "/")
             client = "vanilla"
+        }
+    })
+
+    blcRadio.addEventListener("change", () => {
+        if (blcRadio.checked) {
+            mcDir.value = path.join(mcPath, "blclient/minecraft").replaceAll("\\", "/")
+            client = "blc"
         }
     })
 
