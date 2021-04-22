@@ -12,7 +12,8 @@
 1. Clone the source with `git clone https://github.com/Zxnii/duels-overlay.git`
 2. Navigate to the cloned directory and do `npm install` to install dependencies
 3. Make any desired changes
-4. Build by running `npm build`
+4. Build by running `npm run build`
+5. Package by running `npm run package`
 
 ### FAQ
 
