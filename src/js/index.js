@@ -121,22 +121,31 @@ window.addEventListener("load", () => {
                     const kdrElement = document.createElement("td")
                     const bwsElement = document.createElement("td")
                     const wsElement = document.createElement("td")
+                    const winElement = document.createElement("td")
+                    const lossElement = document.createElement("td")
+                    const aimElement = document.createElement("td")
 
                     console.log(guild)
 
-                    if (player) {
+                    if (player && player.stats["Duels"]) {
+                        const wins = player.stats["Duels"]["wins"] || 0
+                        const losses = player.stats["Duels"]["losses"] || 0
                         const bws = player.stats["Duels"]["best_overall_winstreak"] || 0
                         const ws = player.stats["Duels"]["current_winstreak"] || 0
-                        const wlr = Math.round((player.stats["Duels"]["wins"] / player.stats["Duels"]["losses"]) * 100) / 100 || 0
-                        const kdr = Math.round((player.stats["Duels"]["kills"] / player.stats["Duels"]["deaths"]) * 100) / 100 || 0
+                        const wlr = Math.round((wins / losses) * 100) / 100 || wins
+                        const kdr = Math.round((player.stats["Duels"]["kills"] / player.stats["Duels"]["deaths"]) * 100) / 100 || player.stats["Duels"]["kills"]
+                        const aim = Math.round(((player.stats["Duels"]["melee_hits"] / player.stats["Duels"]["melee_swings"])*100)*100) / 100
 
                         let threatLevel = 0
                         let wlrThreat = 0
                         let kdrThreat = 0
                         let wsThreat = 0
                         let bwsThreat = 0
+                        let aimThreat = 0
+
+                        console.log(player.stats["Duels"])
                         
-                        if (wlr >= 10) {
+                        if (wlr >= 15) {
                             threatLevel += 3
                             wlrThreat = 3
                         } else if (wlr >= 5) {
@@ -147,7 +156,7 @@ window.addEventListener("load", () => {
                             wlrThreat = 1
                         }
 
-                        if (kdr >= 20) {
+                        if (kdr >= 15) {
                             threatLevel += 3
                             kdrThreat = 3
                         } else if (kdr >= 10) {
@@ -180,7 +189,18 @@ window.addEventListener("load", () => {
                             bwsThreat = 1
                         }
 
-                        const overallThreatLevel = Math.round(threatLevel/4)
+                        if (aim >= 70) {
+                            threatLevel += 3
+                            aimThreat = 3
+                        } else if (aim >= 60) {
+                            threatLevel += 2
+                            aimThreat = 2
+                        } else if (aim >= 40) {
+                            threatLevel += 1
+                            aimThreat = 1
+                        }
+
+                        const overallThreatLevel = Math.round(threatLevel/5)
                         nameElement.innerHTML = ""
 
                         if (config.youTag && name == config.user) {
@@ -196,6 +216,9 @@ window.addEventListener("load", () => {
                         kdrElement.innerHTML = `<span style="color: ${colors[threatColors[kdrThreat]]};">${kdr}</span>` || "N/A"
                         bwsElement.innerHTML = `<span style="color: ${colors[threatColors[bwsThreat]]};">${bws}</span>` || "N/A"
                         wsElement.innerHTML = `<span style="color: ${colors[threatColors[wsThreat]]};">${ws}</span>` || "N/A"
+                        winElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${wins}</span>`
+                        lossElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${losses}</span>`
+                        aimElement.innerHTML = `<span style="color: ${colors[threatColors[aimThreat]]};">${aim}</span>` || "N/A"
                     } else {
                         nameElement.innerHTML = `<span style="color: ${colors["RED"]};">${name} (NICKED)</span>`
                     }
@@ -204,8 +227,12 @@ window.addEventListener("load", () => {
                     userElement.append(nameElement)
                     userElement.append(wlrElement)
                     userElement.append(kdrElement)
+                    userElement.append(aimElement)
                     userElement.append(bwsElement)
                     userElement.append(wsElement)
+                    userElement.append(winElement)
+                    userElement.append(lossElement)
+
                     userElement.className = "user"
                     userElement.id = `user-${name}`
 
