@@ -35,7 +35,10 @@ window.addEventListener("load", () => {
     const lunarRadio = document.querySelector("#lunar")
     const vanillaRadio = document.querySelector("#vanilla-forge")
     const blcRadio = document.querySelector("#blc")
+    const loungeRadio = document.querySelector("#lounge")
     const nodejsVer = document.querySelector("#nodejs-ver")
+    const proxyToggle = document.querySelector("#proxy")
+    const proxyInfo = document.querySelector("#proxy-info")
 
     let client = "vanilla"
 
@@ -52,10 +55,16 @@ window.addEventListener("load", () => {
         apiKey.value = config.apiKey || ""
         mcDir.value = config.minecraftPath || mcPath.replaceAll("\\", "/")
         youTag.checked = config.youTag || false
+        proxyToggle.checked = config.proxy || false
+
+        if (proxyToggle.checked) {
+            proxyInfo.innerText = `Connect to Hypixel with localhost:25566 to use the proxy.`
+        }
 
         vanillaRadio.checked = (config.client || "vanilla") == "vanilla"
         lunarRadio.checked = (config.client || "vanilla") == "lunar"
         blcRadio.checked = (config.client || "vanilla") == "blc"
+        loungeRadio.checked = (config.client || "vanilla") == "lounge"
     } else {
         mcDir.value = mcPath.replaceAll("\\", "/")
         vanillaRadio.checked = true
@@ -82,6 +91,20 @@ window.addEventListener("load", () => {
         }
     })
 
+    loungeRadio.addEventListener("change", () => {
+        if (loungeRadio.checked) {
+            mcDir.value = path.join(mcPath, "../../.pvplounge/logs").replaceAll("\\", "/")
+            client = "lounge"
+        }
+    })
+
+    proxyToggle.addEventListener("change", () => {
+        proxyInfo.innerText = ""
+        if (proxyToggle.checked) {
+            proxyInfo.innerText = `Connect to Hypixel with localhost:25566 to use the proxy.`
+        }
+    })
+
     saveButton.addEventListener("click", () => {
         fs.mkdirSync(folderPath, {recursive: true})
         fs.writeFileSync(configPath, JSON.stringify({
@@ -89,6 +112,7 @@ window.addEventListener("load", () => {
             apiKey: apiKey.value,
             minecraftPath: mcDir.value,
             youTag: youTag.checked,
+            proxy: proxyToggle.checked,
             client
         }, true, 4))
         window.location.href = "./index.htm"
