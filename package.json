@@ -8,8 +8,9 @@
     "productName": "Duels Overlay"
   },
   "scripts": {
-    "test": "npx electron ./app.js --test-mode",
-    "build": "npx electron-builder"
+    "test": "npm run build && npx electron ./app.js --test-mode",
+    "build": "",
+    "package": "npx electron-builder"
   },
   "author": "zani",
   "license": "GPL-3.0-or-later",
