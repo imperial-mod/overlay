@@ -21,20 +21,21 @@ const { argv } = require("process")
 
 app.on("ready", () => {
     const win = new BrowserWindow({
-        width: 600,
-        height: 400,
-        frame: false,
-        transparent: true,
+        width: 800,
+        height: 600,
+        //frame: argv[2] == "--test-mode",
+        transparent: argv[2] != "--test-mode",
         title: "Duels Overlay",
         icon: path.join(__dirname, "/assets/icons/512x.png"),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        },
-        alwaysOnTop: true
+        }
     })
 
     if (argv[2] != "--test-mode") {
+        win.setAlwaysOnTop(true)
+
         win.on("blur", () => {
             win.setIgnoreMouseEvents(true)
         })
