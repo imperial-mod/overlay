@@ -23,7 +23,7 @@ app.on("ready", () => {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
-        //frame: argv[2] == "--test-mode",
+        frame: argv[2] == "--test-mode",
         transparent: argv[2] != "--test-mode",
         title: "Duels Overlay",
         icon: path.join(__dirname, "/assets/icons/512x.png"),
