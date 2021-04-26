@@ -42,6 +42,10 @@ const colors = {
 }
 
 const ranks = {
+    "ADMIN": `<span style="color: ${colors["RED"]}">[ADMIN] `,
+    "MODERATOR": `<span style="color: ${colors["DARK_GREEN"]}">[MOD] `,
+    "HELPER": `<span style="color: ${colors["BLUE"]}">[HELPER] `,
+    "YOUTUBER": `<span style="color: ${colors["RED"]}">[</span><span style="color: ${colors["WHITE"]}">YOUTUBE</span><span style="color: ${colors["RED"]}">] `,
     "SUPERSTAR": `<span style="color: {monthly_color}">[MVP</span>{plus_color}{plus_color}<span style="color: {monthly_color}">] `,
     "MVP_PLUS": `<span style="color: ${colors["AQUA"]}">[MVP</span>{plus_color}<span style="color: ${colors["AQUA"]}">] `,
     "MVP": `<span style="color: ${colors["AQUA"]}">[MVP] `,
@@ -72,6 +76,7 @@ window.addEventListener("load", () => {
     const folderPath = path.join(os.homedir(), "/duels_overlay")
     const configPath = path.join(folderPath, "config.json")
     const mcApi = new api.McAPI()
+    const numberFormatter = new Intl.NumberFormat("en-US")
 
     let lastLog = []
     let changedLogs = []
@@ -144,6 +149,10 @@ window.addEventListener("load", () => {
                         let aimThreat = 0
 
                         console.log(player.stats["Duels"])
+
+                        const rank = player.rank || (player.monthlyPackageRank == "SUPERSTAR" ? "SUPERSTAR" : undefined || player.newPackageRank || "NON")
+
+                        console.log(rank)
                         
                         if (wlr >= 15) {
                             threatLevel += 3
@@ -207,18 +216,18 @@ window.addEventListener("load", () => {
                             nameElement.innerHTML = `<span style="color: ${colors.AQUA};">[Y]</span> `
                         }
 
-                        nameElement.innerHTML += `${ranks[player.monthlyPackageRank == "SUPERSTAR" ? "SUPERSTAR" : undefined || player.newPackageRank || "NON"].replaceAll("{plus_color}", `<span style="color: ${colors[player.rankPlusColor || "RED"]};">+</span>`)}${name}</span>`.replaceAll("{monthly_color}", player["monthlyRankColor"] || "GOLD")
+                        nameElement.innerHTML += `${ranks[rank].replaceAll("{plus_color}", `<span style="color: ${colors[player.rankPlusColor || "RED"]};">+</span>`)}${name}</span>`.replaceAll("{monthly_color}", player.monthlyRankColor || "GOLD")
                         if (guild && guild.tag) {
                             nameElement.innerHTML += ` <span style="color: ${colors[guild.tagColor] || colors["GRAY"]};">[${guild.tag}]</span>`
                         }
                         threatElement.innerHTML = `<span style="color: ${colors[threatColors[overallThreatLevel]]}">${threatNames[overallThreatLevel]}</span>`
-                        wlrElement.innerHTML = `<span style="color: ${colors[threatColors[wlrThreat]]};">${wlr}</span>` || "N/A"
-                        kdrElement.innerHTML = `<span style="color: ${colors[threatColors[kdrThreat]]};">${kdr}</span>` || "N/A"
-                        bwsElement.innerHTML = `<span style="color: ${colors[threatColors[bwsThreat]]};">${bws}</span>` || "N/A"
-                        wsElement.innerHTML = `<span style="color: ${colors[threatColors[wsThreat]]};">${ws}</span>` || "N/A"
-                        winElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${wins}</span>`
-                        lossElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${losses}</span>`
-                        aimElement.innerHTML = `<span style="color: ${colors[threatColors[aimThreat]]};">${aim}</span>` || "N/A"
+                        wlrElement.innerHTML = `<span style="color: ${colors[threatColors[wlrThreat]]};">${numberFormatter.format(wlr)}</span>` || "N/A"
+                        kdrElement.innerHTML = `<span style="color: ${colors[threatColors[kdrThreat]]};">${numberFormatter.format(kdr)}</span>` || "N/A"
+                        bwsElement.innerHTML = `<span style="color: ${colors[threatColors[bwsThreat]]};">${numberFormatter.format(bws)}</span>` || "N/A"
+                        wsElement.innerHTML = `<span style="color: ${colors[threatColors[wsThreat]]};">${numberFormatter.format(ws)}</span>` || "N/A"
+                        winElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${numberFormatter.format(wins)}</span>`
+                        lossElement.innerHTML = `<span style="color: ${colors["GRAY"]};">${numberFormatter.format(losses)}</span>`
+                        aimElement.innerHTML = `<span style="color: ${colors[threatColors[aimThreat]]};">${aim}%</span>` || "N/A"
                     } else {
                         nameElement.innerHTML = `<span style="color: ${colors["RED"]};">${name} (NICKED)</span>`
                     }
