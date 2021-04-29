@@ -20,7 +20,8 @@ const os = require("os")
 const path = require("path")
 const api = require("./js/api")
 const LogReader = require("./js/LogReader")
-const { shell } = require("electron")
+const DiscordRPC = require("discord-rpc")
+const package = require("../package.json")
 
 const colors = {
     "DARK_RED": "#AA0000",
@@ -70,6 +71,7 @@ const threatNames = [
 
 window.addEventListener("load", () => {
     const userList = document.querySelector("#users")
+    const rpc = new DiscordRPC.Client({ transport: "ipc" })
 
     userList.style.visibility = "visible"
 
@@ -111,10 +113,19 @@ window.addEventListener("load", () => {
 
         logReader.on("join", (name) => {
             console.log(name)
+
             mcApi.getUuid(name).then(uuid => {
                 hypixelApi.getPlayer(uuid).then(async (res) => {
                     const player = res.player
 
+                    let mode = null
+
+                    if (name == config.user) {
+                        const status = await hypixelApi.getStatus(uuid)
+
+                        mode = status.session.mode.split("_")[0].toLowerCase()
+                    }
+                    console.log(mode)
                     console.log(player)
                     const guild = await hypixelApi.getGuild(uuid)
 
@@ -133,12 +144,12 @@ window.addEventListener("load", () => {
                     console.log(guild)
 
                     if (player && player.stats["Duels"]) {
-                        const wins = player.stats["Duels"]["wins"] || 0
-                        const losses = player.stats["Duels"]["losses"] || 0
-                        const bws = player.stats["Duels"]["best_overall_winstreak"] || 0
-                        const ws = player.stats["Duels"]["current_winstreak"] || 0
+                        const wins = player.stats["Duels"][`${mode ? mode+"_duel_" : ""}wins`] || 0
+                        const losses = player.stats["Duels"][`${mode ? mode+"_duel_" : ""}losses`] || 0
+                        const bws = player.stats["Duels"][`best_${mode || "overall"}_winstreak`] || 0
+                        const ws = player.stats["Duels"][`current_${mode ? mode+"_" : ""}winstreak`] || 0
                         const wlr = Math.round((wins / losses) * 100) / 100 || wins
-                        const kdr = Math.round((player.stats["Duels"]["kills"] / player.stats["Duels"]["deaths"]) * 100) / 100 || player.stats["Duels"]["kills"]
+                        const kdr = Math.round((player.stats["Duels"][`${mode ? mode+"_duel_" : ""}kills`] / player.stats["Duels"][`${mode ? mode+"_duel_" : ""}deaths`]) * 100) / 100 || player.stats["Duels"]["kills"]
                         const aim = Math.round(((player.stats["Duels"]["melee_hits"] / player.stats["Duels"]["melee_swings"])*100)*100) / 100
 
                         let threatLevel = 0
@@ -257,6 +268,57 @@ window.addEventListener("load", () => {
             if (element)
                 element.remove()
         })
+
+        const startTimestamp = Date.now()
+
+        const setRpc = async () => {
+            const uuid = await mcApi.getUuid(config.user)
+            const playerRes = await hypixelApi.getPlayer(uuid)
+            const player = playerRes.player
+
+            if (player.stats["Duels"]) {
+                const ws = player.stats["Duels"]["current_winstreak"] || 0
+                const status = await hypixelApi.getStatus(uuid)
+
+                console.log(status.session)
+
+                if (status.session.online && status.session.gameType == "DUELS") {
+                    if (status.session.mode == "LOBBY") {
+                        rpc.setActivity({
+                            details: "In a Duels Lobby",
+                            startTimestamp,
+                            state: `Winstreak: ${ws}`,
+                            largeImageKey: "icon",
+                            largeImageText: `Duels Overlay | v${package.version}`,
+                            instance: false
+                        })
+                    } else {
+                        let mode = status.session.mode.split("_")[0].toLowerCase()
+
+                        mode = mode[0].toUpperCase() + mode.slice(1)
+
+                        rpc.setActivity({
+                            details: `In a ${mode} Duel`,
+                            startTimestamp,
+                            state: `Winstreak: ${ws}`,
+                            largeImageKey: "icon",
+                            largeImageText: `Duels Overlay | v${package.version}`,
+                            instance: false
+                        })
+                    }
+                }
+            }
+        }
+
+        if (config.presence) {
+            rpc.login({ clientId: "837192315453308948" })
+
+            rpc.on("ready", () => {
+                setRpc()
+
+                setInterval(setRpc, 15e3)
+            })
+        }
     } else {
         window.location.href = "./options.htm"
     }

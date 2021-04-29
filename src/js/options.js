@@ -39,6 +39,7 @@ window.addEventListener("load", () => {
     const nodejsVer = document.querySelector("#nodejs-ver")
     const proxyToggle = document.querySelector("#proxy")
     const proxyInfo = document.querySelector("#proxy-info")
+    const presence = document.querySelector("#presence")
 
     let client = "vanilla"
 
@@ -56,6 +57,7 @@ window.addEventListener("load", () => {
         mcDir.value = config.minecraftPath || mcPath.replaceAll("\\", "/")
         youTag.checked = config.youTag || false
         proxyToggle.checked = config.proxy || false
+        presence.checked = config.presence
 
         if (proxyToggle.checked) {
             proxyInfo.innerText = `Connect to Hypixel with localhost:25566 to use the proxy.`
@@ -113,6 +115,7 @@ window.addEventListener("load", () => {
             minecraftPath: mcDir.value,
             youTag: youTag.checked,
             proxy: proxyToggle.checked,
+            presence: presence.checked,
             client
         }, true, 4))
         window.location.href = "./index.htm"

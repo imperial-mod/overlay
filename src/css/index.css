@@ -240,6 +240,7 @@ body::-webkit-scrollbar-thumb {
     position: relative;
     padding-left: 35px;
     margin: 5px 0;
+    margin-bottom: 10px;
     cursor: pointer;
     font-size: 18px;
     font-style: italic;
