@@ -170,7 +170,7 @@ class HypixelAPI {
             json = JSON.parse(body)
         }
 
-        return json.status
+        return json
     }
 
     getLeaderboards = async () => {
