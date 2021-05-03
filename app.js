@@ -18,6 +18,7 @@
 const { app, BrowserWindow } = require("electron")
 const path = require("path")
 const { argv } = require("process")
+const os = require("os")
 
 app.on("ready", () => {
     const win = new BrowserWindow({
@@ -44,6 +45,11 @@ app.on("ready", () => {
             win.setIgnoreMouseEvents(false)
         })
     }
+
+    win.on("close", () => {
+        if (os.platform() == "darwin")
+            app.quit()
+    })
 
     win.loadFile("./src/index.htm")
 })
