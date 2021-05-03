@@ -18,6 +18,7 @@
 const { app, BrowserWindow } = require("electron")
 const path = require("path")
 const { argv } = require("process")
+const os = require("os")
 
 app.on("ready", () => {
     const win = new BrowserWindow({
@@ -26,6 +27,7 @@ app.on("ready", () => {
         frame: argv[2] == "--test-mode",
         transparent: argv[2] != "--test-mode",
         title: "Duels Overlay",
+        show: false,
         icon: path.join(__dirname, "/assets/icons/512x.png"),
         webPreferences: {
             nodeIntegration: true,
@@ -44,6 +46,15 @@ app.on("ready", () => {
             win.setIgnoreMouseEvents(false)
         })
     }
+
+    win.on("ready-to-show", () => {
+        win.show()
+    })
+
+    win.on("close", () => {
+        if (os.platform() == "darwin")
+            app.quit()
+    })
 
     win.loadFile("./src/index.htm")
 })
