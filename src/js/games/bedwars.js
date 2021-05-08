@@ -15,8 +15,6 @@ module.exports = {
         "Wins",
     ],
     getStats: (player, mode, numberFormatter) => {
-        mode = mode.split("_")[0].toLowerCase()
-
         const stats = []
 
         const star = player["achievements"]["bedwars_level"]
@@ -85,10 +83,10 @@ module.exports = {
         }
 
         const overallThreatLevel = Math.round(threatLevel / 4)
-        const prestige = util.getPrestige(2000, 100, prestiges)
+        const prestige = util.getPrestige(star, 100, prestiges)
 
         stats.push(`<span style="color: ${colors[threatColors[overallThreatLevel]]}">${threatNames[overallThreatLevel]}</span>`)
-        stats.push(util.formatPrestige(11000000000, prestige))
+        stats.push(util.formatPrestige(star, prestige))
         stats.push(`<span style="color: ${colors[threatColors[wlrThreat]]};">${numberFormatter.format(wlr) || "N/A"}</span>`)
         stats.push(`<span style="color: ${colors[threatColors[fkdrThreat]]};">${numberFormatter.format(fkdr) || "N/A"}</span>`)
         stats.push(`<span style="color: ${colors[threatColors[bblrThreat]]};">${numberFormatter.format(bblr) || "N/A"}</span>`)
