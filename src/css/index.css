@@ -125,6 +125,14 @@ body::-webkit-scrollbar-thumb {
     color: rgba(200, 200, 200, 0.7);
 }
 
+#users-header * {
+    height: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    font-weight: bold;
+    color: rgba(200, 200, 200, 0.7);
+}
+
 .user {
     height: 30px;
     font-family: minecraft;
