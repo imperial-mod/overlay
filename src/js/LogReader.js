@@ -22,10 +22,12 @@ const fs = require("fs")
 
 class LogReader extends EventEmitter {
     path
-    constructor(path) {
+    constructor(path, username) {
         super()
 
         this.path = path
+        this.username = username
+
         this.watch()
     }
 
@@ -58,9 +60,13 @@ class LogReader extends EventEmitter {
                         this.emit("server_change")
                     }
 
-                    if (/(.*) joined \((\d)\/(\d)\)!/.test(message)) {
+                    if (/(.*) joined \((\d*)\/(\d*)\)!/.test(message)) {
                         const name = message.split(" ")[0]
                         this.emit("join", name)
+
+                        if (name == this.username) {
+                            this.emit("server_change")
+                        }
                     }
 
                     if (/(.*) has quit!/.test(message)) {
