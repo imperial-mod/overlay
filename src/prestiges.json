@@ -1,0 +1,277 @@
+{
+    "Bedwars": [
+        {
+            "pattern": [
+                "gray"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "white"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "gold"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "aqua"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "dark_green"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "dark_aqua"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "dark_red"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "light_purple"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "dark_blue"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "dark_purple"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "red",
+                "gold",
+                "yellow",
+                "green",
+                "aqua",
+                "light_purple",
+                "dark_purple"
+            ],
+            "star": "✫"
+        },
+        {
+            "pattern": [
+                "white"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "gray"
+        },
+        {
+            "pattern": [
+                "gold"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "gold"
+        },
+        {
+            "pattern": [
+                "aqua"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_aqua"
+        },
+        {
+            "pattern": [
+                "green"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_green"
+        },
+        {
+            "pattern": [
+                "dark_aqua"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "blue"
+        },
+        {
+            "pattern": [
+                "red"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_red"
+        },
+        {
+            "pattern": [
+                "light_purple"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_purple"
+        },
+        {
+            "pattern": [
+                "blue"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_blue"
+        },
+        {
+            "pattern": [
+                "dark_purple"
+            ],
+            "bracket": "gray",
+            "star": "✪",
+            "starColor": "dark_gray"
+        },
+        {
+            "pattern": [
+                "dark_gray",
+                "gray",
+                "white"
+            ],
+            "star": "✪",
+            "starColor": "gray"
+        },
+        {
+            "pattern": [
+                "white",
+                "white",
+                "yellow",
+                "yellow",
+                "gold",
+                "gold"
+            ],
+            "star": "⚝",
+            "starColor": "gold"
+        },
+        {
+            "pattern": [
+                "gold",
+                "gold",
+                "white",
+                "white",
+                "aqua",
+                "dark_aqua"
+            ],
+            "star": "⚝",
+            "starColor": "dark_aqua"
+        },
+        {
+            "pattern": [
+                "dark_purple",
+                "dark_purple",
+                "light_purple",
+                "light_purple",
+                "gold",
+                "yellow"
+            ],
+            "star": "⚝",
+            "starColor": "yellow"
+        },
+        {
+            "pattern": [
+                "aqua",
+                "aqua",
+                "white",
+                "white",
+                "gray",
+                "dark_gray"
+            ],
+            "star": "⚝",
+            "starColor": "gray"
+        },
+        {
+            "pattern": [
+                "white",
+                "white",
+                "green",
+                "green",
+                "dark_green",
+                "dark_green"
+            ],
+            "star": "⚝",
+            "starColor": "dark_green"
+        },
+        {
+            "pattern": [
+                "dark_red",
+                "dark_red",
+                "red",
+                "red",
+                "light_purple",
+                "dark_purple"
+            ],
+            "star": "⚝",
+            "starColor": "light_purple"
+        },
+        {
+            "pattern": [
+                "yellow",
+                "yellow",
+                "white",
+                "white",
+                "dark_gray",
+                "dark_gray"
+            ],
+            "star": "⚝",
+            "starColor": "dark_gray"
+        },
+        {
+            "pattern": [
+                "green",
+                "green",
+                "dark_green",
+                "dark_green",
+                "gold",
+                "yellow"
+            ],
+            "star": "⚝",
+            "starColor": "gold"
+        },
+        {
+            "pattern": [
+                "aqua",
+                "aqua",
+                "dark_aqua",
+                "dark_aqua",
+                "blue",
+                "dark_blue"
+            ],
+            "star": "⚝",
+            "starColor": "blue"
+        },
+        {
+            "pattern": [
+                "yellow",
+                "yellow",
+                "gold",
+                "gold",
+                "red",
+                "red",
+                "dark_red"
+            ],
+            "star": "⚝"
+        }
+    ]
+}
