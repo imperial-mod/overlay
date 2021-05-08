@@ -1,0 +1,32 @@
+{
+    "colors": {
+        "DARK_RED": "#AA0000",
+        "RED": "#FF5555",
+        "GOLD": "#FFAA00",
+        "YELLOW": "#FFFF55",
+        "DARK_GREEN": "#00AA00",
+        "GREEN": "#55FF55",
+        "AQUA": "#55FFFF",
+        "DARK_AQUA": "#00AAAA",
+        "DARK_BLUE": "#0000AA",
+        "BLUE": "#5555FF",
+        "LIGHT_PURPLE": "#FF55FF",
+        "DARK_PURPLE": "#AA00AA",
+        "WHITE": "#FFFFFF",
+        "GRAY": "#AAAAAA",
+        "DARK_GRAY": "#555555",
+        "BLACK": "#000000"
+    },
+    "threatColors": [
+        "GREEN",
+        "YELLOW",
+        "RED",
+        "DARK_PURPLE"
+    ],
+    "threatNames": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "EXTREME"
+    ]
+}
