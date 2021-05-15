@@ -273,5 +273,68 @@
             ],
             "star": "⚝"
         }
+    ],
+    "Skywars": [
+        {
+            "pattern": [
+                "gray"
+            ]
+        },
+        {
+            "pattern": [
+                "white"
+            ]
+        },
+        {
+            "pattern": [
+                "gold"
+            ]
+        },
+        {
+            "pattern": [
+                "aqua"
+            ]
+        },
+        {
+            "pattern": [
+                "dark_green"
+            ]
+        },
+        {
+            "pattern": [
+                "dark_aqua"
+            ]
+        },
+        {
+            "pattern": [
+                "dark_red"
+            ]
+        },
+        {
+            "pattern": [
+                "light_purple"
+            ]
+        },
+        {
+            "pattern": [
+                "dark_blue"
+            ]
+        },
+        {
+            "pattern": [
+                "dark_purple"
+            ]
+        },
+        {
+            "pattern": [
+                "red",
+                "gold",
+                "yellow",
+                "green",
+                "aqua",
+                "light_purple",
+                "dark_purple"
+            ]
+        }
     ]
 }
