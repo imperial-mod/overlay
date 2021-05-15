@@ -16,11 +16,14 @@
 */
 
 const { app, BrowserWindow } = require("electron")
+const { autoUpdater } = require("electron-updater")
 const path = require("path")
 const { argv } = require("process")
 const os = require("os")
 
 app.on("ready", () => {
+    autoUpdater.checkForUpdatesAndNotify()
+
     const win = new BrowserWindow({
         width: 800,
         height: 600,
