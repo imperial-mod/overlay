@@ -191,6 +191,21 @@ body::-webkit-scrollbar-thumb {
     box-sizing: border-box;
 }
 
+.options-subcategory {
+	width: 100%;
+    padding: 0 10px;
+    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+}
+
+.options-subheader {
+	width: 100%;
+    height: 30px;
+    text-align: left;
+}
+
 .options-category:last-of-type {
     border-bottom: none;
 }

@@ -77,9 +77,23 @@
         <div class="options-category">
             <h3 class="options-header">Experimental</h3>
             <label class="options-checkbox">Proxy Connection
-                <input type="checkbox" id="proxy" disabled>
+                <input type="checkbox" id="proxy">
                 <span class="options-checkmark"></span>
             </label>
+			<div class="options-subcategory">
+				<h3 class="options-subheader">
+					Proxy Options
+				</h3>
+				<p class="options-label">Auth Mode</p>
+				<label class="options-radio">Mojang
+					<input type="radio" name="auth" id="mojang" checked>
+					<span class="options-radio-check"></span>
+				</label>
+				<label class="options-radio">Microsoft
+					<input type="radio" name="auth" id="microsoft">
+					<span class="options-radio-check"></span>
+				</label>
+			</div>
             <p class="options-info" id="proxy-info"></p>
         </div>
 

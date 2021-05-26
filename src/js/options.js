@@ -40,8 +40,11 @@ window.addEventListener("load", () => {
     const proxyToggle = document.querySelector("#proxy")
     const proxyInfo = document.querySelector("#proxy-info")
     const presence = document.querySelector("#presence")
+	const mojang = document.querySelector("#mojang")
+	const microsoft = document.querySelector("#microsoft")
 
     let client = "vanilla"
+	let auth = "mojang"
 
     const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json"), {encoding: "utf8"}))
 
@@ -63,10 +66,16 @@ window.addEventListener("load", () => {
             proxyInfo.innerText = `Connect to Hypixel with localhost:25566 to use the proxy.`
         }
 
+		client = config.client || "vanilla"
+		auth = config.auth || "mojang"
+
         vanillaRadio.checked = (config.client || "vanilla") == "vanilla"
         lunarRadio.checked = (config.client || "vanilla") == "lunar"
         blcRadio.checked = (config.client || "vanilla") == "blc"
         loungeRadio.checked = (config.client || "vanilla") == "lounge"
+
+		mojang.checked = (config.auth || "mojang") == "mojang"
+		microsoft.checked = (config.auth || "mojang") == "microsoft"
     } else {
         mcDir.value = mcPath.replaceAll("\\", "/")
         vanillaRadio.checked = true
@@ -107,6 +116,18 @@ window.addEventListener("load", () => {
         }
     })
 
+	mojang.addEventListener("change", () => {
+		if (mojang.checked) {
+			auth = "mojang"
+		}
+	})
+
+	microsoft.addEventListener("change", () => {
+		if (microsoft.checked) {
+			auth = "microsoft"
+		}
+	})
+
     saveButton.addEventListener("click", () => {
         fs.mkdirSync(folderPath, {recursive: true})
         fs.writeFileSync(configPath, JSON.stringify({
@@ -116,6 +137,7 @@ window.addEventListener("load", () => {
             youTag: youTag.checked,
             proxy: proxyToggle.checked,
             presence: presence.checked,
+			auth,
             client
         }, true, 4))
         window.location.href = "./index.htm"
