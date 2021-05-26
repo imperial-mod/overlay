@@ -19,9 +19,11 @@
     "electron-builder": "^22.10.5"
   },
   "dependencies": {
+    "buffer-equal": "^1.0.0",
     "discord-rpc": "^3.2.0",
     "electron-updater": "^4.3.8",
     "minecraft-folder-path": "^1.2.0",
+    "minecraft-protocol": "^1.25.0",
     "node-fetch": "^2.6.1",
     "sha1": "^1.1.1"
   }
