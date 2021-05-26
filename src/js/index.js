@@ -22,6 +22,8 @@ const api = require("./js/api")
 const LogReader = require("./js/LogReader")
 const DiscordRPC = require("discord-rpc")
 const package = require("../package.json")
+const credits = require("./credits.json")
+const Proxy = require("./js/Proxy")
 
 const colors = require("./constants.json").colors
 
@@ -53,6 +55,111 @@ window.addEventListener("load", () => {
     const mcApi = new api.McAPI()
     const numberFormatter = new Intl.NumberFormat("en-US")
 
+	const getStats = (uuid, name) => {
+		hypixelApi.getPlayer(uuid).then(async (res) => {
+			const player = res.player
+
+			if (name == config.user || (name == config.nickname && config.nicked)) {
+				const status = await hypixelApi.getStatus(uuid)
+
+				game = status.session.gameType
+				mode = status.session.mode
+
+				console.log(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))
+
+				if (fs.existsSync(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))) {
+					const statFile = require(`./js/games/${game.toLowerCase()}`)
+					const usersHeader = document.querySelector("#users-header")
+					const userHeaderCatergories = document.querySelectorAll("#users-header > *")
+					const statCategories = ["Name"]
+
+					statCategories.push(...statFile.stats)
+
+					console.log(statCategories)
+					console.log(statFile)
+
+					statsFunction = statFile.getStats
+
+					for (const element of userHeaderCatergories) {
+						element.remove()
+					}
+
+					for (const category of statCategories) {
+						const element = document.createElement("td")
+						element.innerText = category
+						usersHeader.appendChild(element)
+					}
+				} else {
+					const usersHeader = document.querySelector("#users-header")
+					const userHeaderCatergories = document.querySelectorAll("#users-header > *")
+					const statCategories = ["Name"]
+
+					for (const element of userHeaderCatergories) {
+						element.remove()
+					}
+
+					for (const category of statCategories) {
+						const element = document.createElement("td")
+						element.innerText = category
+						usersHeader.appendChild(element)
+					}
+
+					statsFunction = () => {
+						return []
+					}
+				}
+			}
+			console.log(mode)
+			console.log(player)
+
+			const userElement = document.createElement("tr")
+			const nameElement = document.createElement("td")
+
+			if (player && mode != "LOBBY") {
+				const guild = await hypixelApi.getGuild(uuid)
+				const rank = player.rank || (player.monthlyPackageRank == "SUPERSTAR" ? "SUPERSTAR" : undefined || player.newPackageRank || "NON")
+
+				if (credits.developers.includes(uuid)) {
+					nameElement.innerHTML = `<span style="color: ${colors["LIGHT_PURPLE"]}">[D]</span> `
+				} else if (credits.contributers.includes(uuid)) {
+					nameElement.innerHTML = `<span style="color: ${colors["DARK_PURPLE"]}">[C]</span> `
+				} else if (credits.testers.includes(uuid)) {
+					nameElement.innerHTML = `<span style="color: ${colors["DARK_AQUA"]}">[T]</span> `
+				}
+
+				if (config.youTag && name == config.user) {
+					nameElement.innerHTML += `<span style="color: ${colors.AQUA};">[Y]</span> `
+				}
+
+				nameElement.innerHTML += `${ranks[rank].replaceAll("{plus_color}", `<span style="color: ${colors[player.rankPlusColor || "RED"]};">+</span>`)}${name}</span>`.replaceAll("{monthly_color}", player.monthlyRankColor || "GOLD")
+				if (guild && guild.tag) {
+					nameElement.innerHTML += ` <span style="color: ${colors[guild.tagColor] || colors["GRAY"]};">[${guild.tag}]</span>`
+				}
+
+				const stats = statsFunction(player, mode, numberFormatter)
+
+				console.log(stats)
+
+				userElement.append(nameElement)
+
+				for (const stat of stats) {
+					const element = document.createElement("td")
+					element.innerHTML = stat
+					userElement.append(element)
+				}
+			} else if (mode != "LOBBY") {
+				nameElement.innerHTML = `<span style="color: ${colors["RED"]};">${name} (NICKED)</span>`
+			}
+
+			userElement.className = "user"
+			userElement.id = `user-${name}`
+
+			userList.append(userElement)
+
+			users.push(name)
+		})
+	}
+
     let lastLog = []
     let changedLogs = []
     let logs = []
@@ -80,121 +187,44 @@ window.addEventListener("load", () => {
         hypixelApi = new api.HypixelAPI(config.apiKey)
         logPath = path.join(config.minecraftPath, "latest.log")
 
-        const logReader = new LogReader(logPath, config.user)
+		if (!config.proxy) {
+			const logReader = new LogReader(logPath, config.user)
 
-        logReader.on("server_change", () => {
-            users = []
-            for (const element of document.querySelectorAll(".user")) {
-                element.remove()
-            }
-        })
+			logReader.on("server_change", () => {
+				users = []
+				for (const element of document.querySelectorAll(".user")) {
+					element.remove()
+				}
+			})
 
-        logReader.on("join", (name) => {
-            console.log(name)
+			logReader.on("join", (name) => {
+				console.log(name)
 
-            mcApi.getUuid(name).then(uuid => {
-                hypixelApi.getPlayer(uuid).then(async (res) => {
-                    const player = res.player
+				mcApi.getUuid(name).then(uuid => {
+					getStats(uuid, name)
+				})
+			})
 
-                    if (name == config.user) {
-                        const status = await hypixelApi.getStatus(uuid)
+			logReader.on("leave", (name) => {
+				const element = document.querySelector(`#user-${name}`)
+				if (element)
+					element.remove()
+			})
+		} else {
+			const proxy = new Proxy(config.username, config.auth, 25566)
 
-                        game = status.session.gameType
-                        mode = status.session.mode
+			proxy.startProxy()
 
-                        console.log(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))
+			proxy.on("join", (uuid, name) => {
+				getStats(uuid, name)
+			})
 
-                        if (fs.existsSync(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))) {
-                            const statFile = require(`./js/games/${game.toLowerCase()}`)
-                            const usersHeader = document.querySelector("#users-header")
-                            const userHeaderCatergories = document.querySelectorAll("#users-header > *")
-                            const statCategories = ["Name"]
-
-                            statCategories.push(...statFile.stats)
-
-                            console.log(statCategories)
-                            console.log(statFile)
-
-                            statsFunction = statFile.getStats
-
-                            for (const element of userHeaderCatergories) {
-                                element.remove()
-                            }
-
-                            for (const category of statCategories) {
-                                const element = document.createElement("td")
-                                element.innerText = category
-                                usersHeader.appendChild(element)
-                            }
-                        } else {
-                            const usersHeader = document.querySelector("#users-header")
-                            const userHeaderCatergories = document.querySelectorAll("#users-header > *")
-                            const statCategories = ["Name"]
-
-                            for (const element of userHeaderCatergories) {
-                                element.remove()
-                            }
-
-                            for (const category of statCategories) {
-                                const element = document.createElement("td")
-                                element.innerText = category
-                                usersHeader.appendChild(element)
-                            }
-
-                            statsFunction = () => {
-                                return []
-                            }
-                        }
-                    }
-                    console.log(mode)
-                    console.log(player)
-
-                    const userElement = document.createElement("tr")
-                    const nameElement = document.createElement("td")
-
-                    if (player) {
-                        const guild = await hypixelApi.getGuild(uuid)
-                        const rank = player.rank || (player.monthlyPackageRank == "SUPERSTAR" ? "SUPERSTAR" : undefined || player.newPackageRank || "NON")
-
-                        if (config.youTag && name == config.user) {
-                            nameElement.innerHTML = `<span style="color: ${colors.AQUA};">[Y]</span> `
-                        }
-
-                        nameElement.innerHTML += `${ranks[rank].replaceAll("{plus_color}", `<span style="color: ${colors[player.rankPlusColor || "RED"]};">+</span>`)}${name}</span>`.replaceAll("{monthly_color}", player.monthlyRankColor || "GOLD")
-                        if (guild && guild.tag) {
-                            nameElement.innerHTML += ` <span style="color: ${colors[guild.tagColor] || colors["GRAY"]};">[${guild.tag}]</span>`
-                        }
-
-                        const stats = statsFunction(player, mode, numberFormatter)
-
-                        console.log(stats)
-
-                        userElement.append(nameElement)
-
-                        for (const stat of stats) {
-                            const element = document.createElement("td")
-                            element.innerHTML = stat
-                            userElement.append(element)
-                        }
-                    } else {
-                        nameElement.innerHTML = `<span style="color: ${colors["RED"]};">${name} (NICKED)</span>`
-                    }
-
-                    userElement.className = "user"
-                    userElement.id = `user-${name}`
-
-                    userList.append(userElement)
-
-                    users.push(name)
-                })
-            })
-        })
-
-        logReader.on("leave", (name) => {
-            const element = document.querySelector(`#user-${name}`)
-            if (element)
-                element.remove()
-        })
+			proxy.on("leave", (name) => {
+				const element = document.querySelector(`#user-${name}`)
+				if (element)
+					element.remove()
+			})
+		}
 
         const startTimestamp = Date.now()
 
