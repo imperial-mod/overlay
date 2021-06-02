@@ -81,7 +81,7 @@ app.on("ready", () => {
 		updateWindow.show()
 
 		autoUpdater.checkForUpdates().catch(() => {
-			//openOverlay()
+			openOverlay()
 			updateWindow.webContents.send("status", "Starting...")
 		})
 	})
