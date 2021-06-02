@@ -65,10 +65,18 @@ window.addEventListener("load", () => {
 				game = status.session.gameType
 				mode = status.session.mode
 
-				console.log(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))
+				let statsModule = game.toLowerCase()
 
-				if (fs.existsSync(path.join(__dirname, `/js/games/${game.toLowerCase()}.js`))) {
-					const statFile = require(`./js/games/${game.toLowerCase()}`)
+				if (game.toLowerCase() == "skywars" && mode.toLowerCase() == "ranked_normal") {
+					statsModule = "rankedskywars"
+				}
+
+				console.log(statsModule)
+
+				console.log(path.join(__dirname, `/js/games/${statsModule}.js`))
+
+				if (fs.existsSync(path.join(__dirname, `/js/games/${statsModule}.js`))) {
+					const statFile = require(`./js/games/${statsModule}`)
 					const usersHeader = document.querySelector("#users-header")
 					const userHeaderCatergories = document.querySelectorAll("#users-header > *")
 					const statCategories = ["Name"]
@@ -115,6 +123,11 @@ window.addEventListener("load", () => {
 			const userElement = document.createElement("tr")
 			const nameElement = document.createElement("td")
 
+			if (!player) {
+				nameElement.innerHTML = `<span style="color:${colors["RED"]};">${name} (NICKED)</span>`
+				userElement.append(nameElement)
+			}
+
 			if (player && mode != "LOBBY") {
 				const guild = await hypixelApi.getGuild(uuid)
 				const rank = player.rank || (player.monthlyPackageRank == "SUPERSTAR" ? "SUPERSTAR" : undefined || player.newPackageRank || "NON")
@@ -136,19 +149,17 @@ window.addEventListener("load", () => {
 					nameElement.innerHTML += ` <span style="color: ${colors[guild.tagColor] || colors["GRAY"]};">[${guild.tag}]</span>`
 				}
 
+				userElement.append(nameElement)
+
 				const stats = statsFunction(player, mode, numberFormatter)
 
 				console.log(stats)
-
-				userElement.append(nameElement)
 
 				for (const stat of stats) {
 					const element = document.createElement("td")
 					element.innerHTML = stat
 					userElement.append(element)
 				}
-			} else if (mode != "LOBBY") {
-				nameElement.innerHTML = `<span style="color: ${colors["RED"]};">${name} (NICKED)</span>`
 			}
 
 			userElement.className = "user"
@@ -211,7 +222,7 @@ window.addEventListener("load", () => {
 					element.remove()
 			})
 		} else {
-			const proxy = new Proxy(config.username, config.auth, 25566)
+			const proxy = new Proxy(config.user, config.auth, 25566)
 
 			proxy.startProxy()
 

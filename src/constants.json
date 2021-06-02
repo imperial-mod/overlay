@@ -28,5 +28,37 @@
         "MEDIUM",
         "HIGH",
         "EXTREME"
-    ]
+    ],
+	"rankedDivisions": [
+		{
+			"name": "WOOD",
+			"color": "DARK_GRAY",
+			"position": 50000
+		},
+		{
+			"name": "STONE",
+			"color": "GRAY",
+			"position": 20000
+		},
+		{
+			"name": "IRON",
+			"color": "WHITE",
+			"position": 5000
+		},
+		{
+			"name": "GOLD",
+			"color": "GOLD",
+			"position": 1500
+		},
+		{
+			"name": "DIAMOND",
+			"color": "AQUA",
+			"position": 200
+		},
+		{
+			"name": "MASTERS",
+			"color": "DARK_GREEN",
+			"position": 10
+		}
+	]
 }
