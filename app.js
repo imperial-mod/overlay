@@ -52,7 +52,10 @@ const openOverlay = () => {
 
 	win.on("ready-to-show", () => {
 		win.show()
-		updateWindow.close()
+		if (updateWindow) {
+			updateWindow.close()
+			updateWindow = undefined
+		}
 	})
 
 	win.on("close", () => {
