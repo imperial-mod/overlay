@@ -19,6 +19,7 @@ class Proxy extends EventEmitter {
 	}
 
 	startProxy = () => {
+		const packetsToParse = ["chat", "position", "named_entity_spawn", "login", "entity_destroy"]
 		const srv = mc.createServer({
 			"online-mode": false,
 			port: this.port,
@@ -28,8 +29,14 @@ class Proxy extends EventEmitter {
 		srv.on("login", (client) => {
 			const onlinePlayers = []
 
+			mcApi.getUuid(this.username).then(
+				(uuid) => {
+					client.uuid = uuid
+				}
+			)
+
 			const addPlayer = (id, uuid, name) => {
-				onlinePlayers.push({id, uuid, name})
+				onlinePlayers.push({ id, uuid, name })
 			}
 
 			const getPlayer = (id) => {
@@ -49,7 +56,7 @@ class Proxy extends EventEmitter {
 					if (player.id == id) {
 						onlinePlayers.splice(i, 1)
 						return
-					} 
+					}
 				}
 			}
 
@@ -57,6 +64,7 @@ class Proxy extends EventEmitter {
 			console.log(`Incoming connection (${addr})`)
 			let endedClient = false
 			let endedTargetClient = false
+
 			client.on("end", () => {
 				endedClient = true
 				console.log(`Connection closed by client (${addr})`)
@@ -77,80 +85,66 @@ class Proxy extends EventEmitter {
 				profilesFolder: require("minecraft-folder-path"),
 				auth: this.auth
 			})
-			client.on("packet", (data, meta) => {
-				if (targetClient.state === states.PLAY && meta.state === states.PLAY) {
+			client.on("raw", async (raw, meta) => {
+				if (meta.state == states.PLAY && targetClient.state == states.PLAY) {
 					if (!endedTargetClient) {
-						if (meta.name == "chat") {
-							if (data.message.trim() == "/who") {
-								let friendlyPlayers = ""
-								for (const player of onlinePlayers) {
-									friendlyPlayers += `, ${player.name}`
+						if (packetsToParse.includes(meta.name)) {
+							const data = client.deserializer.parsePacketBuffer(raw).data.params
+							if (meta.name == "chat") {
+								if (data.message.trim() == "/who") {
+									let friendlyPlayers = ""
+									for (const player of onlinePlayers) {
+										friendlyPlayers += `, ${player.name}`
+									}
+									client.write("chat", { message: JSON.stringify({ text: `§7Online: §b${friendlyPlayers.replace(", ", "")}` }), position: 0 })
+									return
 								}
-								client.write("chat", { message: JSON.stringify({ text: `§7Online: §b${friendlyPlayers.replace(", ", "")}`}), position: 0 })
-								return
 							}
 						}
-						targetClient.write(meta.name, data)
+						targetClient.writeRaw(raw)
 					}
 				}
 			})
-			targetClient.on("packet", async (data, meta) => {
-				if (meta.state === states.PLAY && client.state === states.PLAY) {
+			targetClient.on("raw", async (raw, meta) => {
+				if (meta.state == states.PLAY && client.state == states.PLAY) {
 					if (!endedClient) {
-						if (meta.name == "named_entity_spawn") {
-							if (!getPlayer(data.entityId)) {
-								const profile = await mcApi.getProfile(data.playerUUID)
+						if (packetsToParse.includes(meta.name)) {
+							const data = targetClient.deserializer.parsePacketBuffer(raw).data.params
+							if (meta.name == "named_entity_spawn") {
+								if (!getPlayer(data.entityId)) {
+									const profile = await mcApi.getProfile(data.playerUUID)
 
-								if (profile.success) {
-									addPlayer(data.entityId, data.playerUUID, profile.name)
-									this.emit("join", profile.id, profile.name)
+									if (profile.success) {
+										addPlayer(data.entityId, data.playerUUID, profile.name)
+										this.emit("join", profile.id, profile.name)
+									}
 								}
 							}
-						}
-						if (meta.name == "entity_destroy") {
-							if (getPlayer(data.entityId)) {
-								removePlayer(data.entityId)
-								this.emit("leave", getPlayer(data.entityId).name)
+							if (meta.name == "entity_destroy") {
+								if (getPlayer(data.entityId)) {
+									removePlayer(data.entityId)
+									this.emit("leave", getPlayer(data.entityId).name)
+								}
+							}
+							if (meta.name == "login") {
+								for (const i in onlinePlayers) {
+									this.emit("leave", onlinePlayers[i].name)
+									removePlayer(onlinePlayers[i].id)
+								}
+								addPlayer(data.entityId, targetClient.uuid, targetClient.username)
+								this.emit("join", targetClient.uuid, targetClient.username)
+							}
+							if (meta.name == "position") {
+								for (const i in onlinePlayers) {
+									this.emit("leave", onlinePlayers[i].name)
+									if (onlinePlayers[i].uuid != targetClient.uuid)
+										removePlayer(onlinePlayers[i].id)
+								}
+								this.emit("join", targetClient.uuid, targetClient.username)
 							}
 						}
-						if (meta.name == "login") {
-							for (const i in onlinePlayers) {
-								this.emit("leave", onlinePlayers[i].name)
-								onlinePlayers.splice(i, 1)
-							}
-							addPlayer(data.entityId, targetClient.uuid, targetClient.username)
-							this.emit("join", targetClient.uuid, targetClient.username)
-						}
-						client.write(meta.name, data)
-						if (meta.name === "set_compression") {
-							client.compressionThreshold = data.threshold
-						}
+						client.writeRaw(raw)
 					}
-				}
-			})
-			const bufferEqual = require("buffer-equal")
-			targetClient.on("raw", (buffer, meta) => {
-				if (client.state !== states.PLAY || meta.state !== states.PLAY) { return }
-				const packetData = targetClient.deserializer.parsePacketBuffer(buffer).data.params
-				const packetBuff = client.serializer.createPacketBuffer({ name: meta.name, params: packetData })
-				if (!bufferEqual(buffer, packetBuff)) {
-					console.log("client<-server: Error in packet " + meta.state + "." + meta.name)
-					console.log("received buffer", buffer.toString("hex"))
-					console.log("produced buffer", packetBuff.toString("hex"))
-					console.log("received length", buffer.length)
-					console.log("produced length", packetBuff.length)
-				}
-			})
-			client.on("raw", (buffer, meta) => {
-				if (meta.state !== states.PLAY || targetClient.state !== states.PLAY) { return }
-				const packetData = client.deserializer.parsePacketBuffer(buffer).data.params
-				const packetBuff = targetClient.serializer.createPacketBuffer({ name: meta.name, params: packetData })
-				if (!bufferEqual(buffer, packetBuff)) {
-					console.log("client -> server: Error in packet " + meta.state + "." + meta.name)
-					console.log("received buffer", buffer.toString("hex"))
-					console.log("produced buffer", packetBuff.toString("hex"))
-					console.log("received length", buffer.length)
-					console.log("produced length", packetBuff.length)
 				}
 			})
 			targetClient.on("end", () => {
