@@ -1,0 +1,51 @@
+:root, html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 15px;
+	background-color: #121212;
+	-webkit-app-region: drag;
+}
+
+#status {
+	height: 30px;
+	width: 100%;
+	margin: 15px 0px;
+	text-align: center;
+	line-height: 30px;
+	color: whitesmoke;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-style: italic;
+}
+
+#info-container {
+	width: 80%;
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#progress-outer {
+	width: 100%;
+	height: 15px;
+	background-color: #141414;
+	border-radius: 7.5px;
+	visibility: hidden;
+}
+
+#progress {
+	height: 15px;
+	background-color: aqua;
+	border-radius: 7.5px;
+}
+
+#icon {
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 15px;
+	width: 88px;
+	height: 88px;
+}
