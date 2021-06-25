@@ -1,6 +1,6 @@
 {
   "name": "duels-overlay",
-  "version": "1.2.0-prerelease5",
+  "version": "1.2.0-prerelease6",
   "description": "An overlay to show stats in pregame for duels.",
   "main": "app.js",
   "build": {
