@@ -28,12 +28,12 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 10px;
     background-color: rgba(0, 0, 0, 0);
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -163,7 +163,7 @@ body::-webkit-scrollbar-thumb {
     max-height: calc(100%-30px);
 }
 
-#options-save {
+.options-button {
     width: 100%;
     box-sizing: border-box;
     border-radius: 10px;
@@ -178,7 +178,7 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
 }
 
-#options-save:hover {
+.options-button:hover {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -194,7 +194,6 @@ body::-webkit-scrollbar-thumb {
 .options-subcategory {
 	width: 100%;
     padding: 0 10px;
-    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
     color: rgba(255, 255, 255, 0.7);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     box-sizing: border-box;
@@ -380,6 +379,20 @@ body::-webkit-scrollbar-thumb {
     height: 8px;
     border-radius: 50%;
     background: #2196F3;
+}
+
+.options-textbox {
+	box-sizing: border-box;
+	height: 25vw;
+	width: 100%;
+	padding: 15px;
+	margin: 15px auto;
+	background-color: rgba(0, 0, 0, 0.3);
+	resize: none;
+	overflow: auto;
+	outline: none;
+	color: white;
+	border-radius: 15px;
 }
 
 .options-info {
