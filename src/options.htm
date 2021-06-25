@@ -42,7 +42,7 @@
             <p class="options-label">Minecraft Directory</p>
             <input type="text" class="options-text-input" id="mc-dir">
 
-            <p class="options-label" >API Key</p>
+            <p class="options-label">API Key</p>
             <input type="text" class="options-input-censored" id="api-key">
 
             <p class="options-label">Client</p>
@@ -93,9 +93,15 @@
 					<input type="radio" name="auth" id="microsoft">
 					<span class="options-radio-check"></span>
 				</label>
+				<p class="options-info" id="proxy-info"></p>
 			</div>
-            <p class="options-info" id="proxy-info"></p>
         </div>
+
+		<div class="options-category">
+			<h3 class="options-header">Advanced</h3>
+			<p class="options-label">Custom CSS</p>
+			<textarea class="editor-input"></textarea>
+		</div>
 
         <div class="options-category">
             <h3 class="options-header">About</h3>
@@ -103,9 +109,10 @@
             <p class="options-info" id="app-ver"></p>
             <p class="options-info" id="electron-ver"></p>
             <p class="options-info" id="nodejs-ver"></p>
+			<a class="options-info" id="license">Licensed under GPL-3.0</a>
             <p class="options-info">Made by zani <br />(<a href="https://github.com/zxnii">Github</a> and <a href="https://namemc.com/profile/ZANIONTOP.1">NameMC</a>)</p>
 
-            <button id="options-save">Save</button>
+            <button class="options-button" id="options-save">Save</button>
         </div>
     </div>
 </body>
