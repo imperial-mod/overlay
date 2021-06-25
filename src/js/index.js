@@ -24,6 +24,7 @@ const DiscordRPC = require("discord-rpc")
 const package = require("../package.json")
 const credits = require("./credits.json")
 const Proxy = require("./js/Proxy")
+const { ipcRenderer } = require("electron")
 
 const colors = require("./constants.json").colors
 
@@ -62,7 +63,7 @@ window.addEventListener("load", () => {
 			if (name == config.user || (name == config.nickname && config.nicked)) {
 				const status = await hypixelApi.getStatus(uuid)
 
-				game = status.session.gameType
+				game = status.session.gameType || "duels"
 				mode = status.session.mode
 
 				let statsModule = game.toLowerCase()
@@ -70,8 +71,6 @@ window.addEventListener("load", () => {
 				if (game.toLowerCase() == "skywars" && mode.toLowerCase() == "ranked_normal") {
 					statsModule = "rankedskywars"
 				}
-
-				console.log(statsModule)
 
 				console.log(path.join(__dirname, `/js/games/${statsModule}.js`))
 
@@ -117,8 +116,6 @@ window.addEventListener("load", () => {
 					}
 				}
 			}
-			console.log(mode)
-			console.log(player)
 
 			const userElement = document.createElement("tr")
 			const nameElement = document.createElement("td")
@@ -152,8 +149,6 @@ window.addEventListener("load", () => {
 				userElement.append(nameElement)
 
 				const stats = statsFunction(player, mode, numberFormatter)
-
-				console.log(stats)
 
 				for (const stat of stats) {
 					const element = document.createElement("td")
@@ -244,7 +239,7 @@ window.addEventListener("load", () => {
 
             const status = await hypixelApi.getStatus(uuid)
 
-            console.log(status.session)
+            console.log(`Status for ${config.user}:`, status.session)
 
             if (status.session.online) {
                 let gameChunks = status.session.gameType.split("_")
@@ -273,7 +268,9 @@ window.addEventListener("load", () => {
                         instance: false
                     })
                 }
-            }
+            } else {
+				rpc.clearActivity()
+			}
         }
 
         if (config.presence) {
@@ -288,4 +285,8 @@ window.addEventListener("load", () => {
     } else {
         window.location.href = "./options.htm"
     }
+})
+
+ipcRenderer.on("log", (ev, time) => {
+	require("./logging")(time)
 })

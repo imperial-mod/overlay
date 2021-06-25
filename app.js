@@ -14,6 +14,9 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+const time = Date.now()
+
+require("./src/logging")(time)
 
 const { app, BrowserWindow, ipcMain } = require("electron")
 const { autoUpdater } = require("electron-updater")
@@ -24,6 +27,8 @@ const os = require("os")
 let updateWindow = null
 
 const openOverlay = () => {
+	let firstLoad = true
+
 	const win = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -53,10 +58,16 @@ const openOverlay = () => {
 	win.on("ready-to-show", () => {
 		win.show()
 		if (updateWindow) {
+			console.log(`Overlay ready`)
 			updateWindow.close()
 			updateWindow = undefined
+		} else {
+			console.log(`Overlay reloaded`)
 		}
+		win.webContents.send("log", time)
 	})
+
+	win.webContents.send("log", time)
 
 	win.on("close", () => {
 		if (os.platform() == "darwin")
@@ -121,4 +132,8 @@ app.on("ready", () => {
 	})
 
 	updateWindow.loadFile("./src/update.htm")
+})
+
+app.on("before-quit", () => {
+	console.log(`Quitting overlay`)
 })

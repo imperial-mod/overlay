@@ -129,7 +129,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+        } else {
+			console.err(body)
+		}
 
         return json
     }
@@ -142,7 +144,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.guild
     }
@@ -155,7 +159,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.playerCount
     }
@@ -168,7 +174,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json
     }
@@ -181,7 +189,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.leaderboards
     }
@@ -194,7 +204,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.recentGames
     }
@@ -207,7 +219,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.watchdogstats
     }
@@ -220,7 +234,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json.records
     }
@@ -233,7 +249,9 @@ class HypixelAPI {
 
         if (res.status == 200) {
             json = JSON.parse(body)
-        }
+		} else {
+			console.err(body)
+		}
 
         return json
     }

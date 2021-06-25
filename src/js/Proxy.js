@@ -61,18 +61,18 @@ class Proxy extends EventEmitter {
 			}
 
 			const addr = client.socket.remoteAddress
-			console.log(`Incoming connection (${addr})`)
+			console.log(`Connected to proxy`)
 			let endedClient = false
 			let endedTargetClient = false
 
 			client.on("end", () => {
 				endedClient = true
-				console.log(`Connection closed by client (${addr})`)
+				console.log(`Connection closed by client`)
 				if (!endedTargetClient) { targetClient.end("End") }
 			})
 			client.on("error", (err) => {
 				endedClient = true
-				console.log(`Connection error by client (${addr})`)
+				console.log(`Connection error by client`)
 				console.log(err.stack)
 				if (!endedTargetClient) { targetClient.end("Error") }
 			})
@@ -149,14 +149,19 @@ class Proxy extends EventEmitter {
 			})
 			targetClient.on("end", () => {
 				endedTargetClient = true
-				console.log(`Connection closed by server (${addr}) `)
+				console.log(`Connection closed by Hypixel`)
 				if (!endedClient) { client.end("End") }
 			})
 			targetClient.on("error", (err) => {
 				endedTargetClient = true
-				console.log(`Connection error by server (${addr}) `, err)
+				console.log(`Connection error by Hypixel`, err)
 				console.log(err.stack)
 				if (!endedClient) { client.end("Error") }
+			})
+			targetClient.on("state", (state) => {
+				if (state == states.PLAY) {
+					console.log(`Proxy ready`)
+				}
 			})
 		})
 	}
