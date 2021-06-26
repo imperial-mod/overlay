@@ -51,7 +51,7 @@ class LogReader extends EventEmitter {
             lastLog = logs
 
             for (const latestLog of changedLogs) {
-                if (/\[[^]*\] \[Client thread\/INFO\]: \[CHAT\] [^]*/.test(latestLog)) {
+                if (/\[[^]*\]\s\[(Client thread|main)\/INFO\]:\s\[CHAT\]\s[^]*/.test(latestLog)) {
                     const message = latestLog.split("[CHAT] ")[1].trim()
 
                     if (/Sending you to (.*)!/.test(message)) {
