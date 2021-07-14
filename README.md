@@ -1,5 +1,7 @@
 # Duels Overlay
 
+**FOR HELP PLEASE JOIN THE [DISCORD](https://discord.gg/rfsPr2kBvv) AND MAKE A TICKET**
+
 ### Installation
 
 1. Download the latest version from [releases](https://github.com/zxnii/duels-overlay/releases)
@@ -18,13 +20,7 @@
 ### FAQ
 
 Q: Is this considered a cheat?
-A: In Hypixel's eyes, yes
-
-Q: Will I get banned for using this?
-A: No, of course not!
-
-Q: Why can't I see their stats if they join before me?
-A: With the current method of getting joins it's not possible, for info on when it will be possible join the [Discord Server](https://discord.gg/rfsPr2kBvv)
+A: It is "use at your own risk" however there has been no bans caused by this
 
 ### Testimonials
 
